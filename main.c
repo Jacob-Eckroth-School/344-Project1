@@ -7,11 +7,14 @@ Description:
 #include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include "movie.h"
+#include "linkedList.h"
 
 bool fileExists(char*);
 void runProgram(char*);
-
-
+void printStartInfo(struct linkedList* list, char*);
 
 int main(int argc, char**argv) {
 	if (argc == 2) {
@@ -39,11 +42,34 @@ bool fileExists(char* fileName) {
 
 
 void runProgram(char* fileName) {
+	FILE* file;
+	file = fopen(fileName, "r");
+	char line[1000];
 
 
+	fgets(line, 1000, file);			//gets rid of the annoying top line
+	struct linkedList* movieList = initializeList();
+	struct movie* moviePointer;
+	
+	while (fgets(line, 1000, file) != NULL) {		//goes through every line.
+		
+		moviePointer = allocateMovie(line);
+		listAppend(movieList, moviePointer);
+	}
+	fclose(file);
+
+
+	printStartInfo(movieList, fileName);
+
+
+
+
+
+
+	freeList(movieList);
 }
 
 
-
-
-
+void printStartInfo(struct linkedList* list, char* fileName) {
+	printf("Processed %s and parsed data for %d movies\n\n", fileName, list->amountOfMovies);
+}
