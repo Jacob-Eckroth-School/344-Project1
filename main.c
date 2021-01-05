@@ -11,6 +11,7 @@ Description:
 #include <stdlib.h>
 #include "movie.h"
 #include "linkedList.h"
+#include "colors.h"
 
 bool fileExists(char*);
 void runProgram(char*);
@@ -25,11 +26,11 @@ int main(int argc, char**argv) {
 			runProgram(argv[1]);
 		}
 		else {
-			printf("That file does not exist, please run the program with a file that exists \n");
+			printError("That file does not exist, please run the program with a file that exists \n");
 		}
 	}
 	else {
-		printf("Incorrect amount of arguments suppplied, please try again \n");
+		printError("Incorrect amount of arguments suppplied, please try again \n");
 		return 0;
 	}
 
@@ -139,8 +140,9 @@ int getChoiceInput() {
 	char userInput[20];
 	while (!valid) {
 		printChoices();
-
+		setCyan();
 		scanf("%s", userInput);
+		resetColor();
 		if (strlen(userInput) != 1) {
 			valid = false;
 		}
@@ -156,7 +158,9 @@ int getChoiceInput() {
 		}
 		
 		if (!valid) {
-			printf("You entered an incorrect choice. Try again.\n");
+			setRed();
+			printError("You entered an incorrect choice. Try again.\n");
+			resetColor();
 		}
 	}
 	return choice;

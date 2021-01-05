@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
+#include "colors.h"
 
 /*
 ** Description: Appends a movie pointer to a linked list
@@ -80,6 +81,7 @@ void showListYear(struct linkedList* list) {
 
 	//iterates through a list and prints a movie made in a certain year
 	struct movie* traveler = list->head;
+	setGreen();
 	while (traveler) {
 		if (traveler->year == year) {
 			printf("%s\n", traveler->title);
@@ -89,8 +91,11 @@ void showListYear(struct linkedList* list) {
 		}
 		traveler = traveler->next;
 	}
+	resetColor();
 	if (!moviesShown) {
+		setRed();
 		printf("No movies exist for the year %d\n", year);
+		resetColor();
 	}
 }
 
@@ -138,13 +143,14 @@ void showListRating(struct linkedList* list) {
 		}
 		traveler = traveler->next;
 	}
-
+	setGreen();
 	for (int i = 0; i < range; i++) {
 		if (bestMovies[i]) {	//not every year will specifically have a movie, so we check if there's a value
+			
 			printf("%d %.1f %s\n", bestMovies[i]->year, bestMovies[i]->rating, bestMovies[i]->title);
 		}
 	}
-
+	resetColor();
 	free(bestMovies);
 
 
@@ -160,7 +166,9 @@ void showListLanguage(struct linkedList* list) {
 	assert(list);
 	char language[21];
 	printf("Enter the language for which you want to see movies: ");
+	setCyan();
 	scanf("%s", language);
+	resetColor();
 	bool moviesShown = false;
 
 	struct movie* traveler = list->head;
@@ -177,14 +185,20 @@ void showListLanguage(struct linkedList* list) {
 			if (!moviesShown) {
 				moviesShown = true;
 			}
+			setGreen();
 			printf("%d %s\n", traveler->year, traveler->title);
+			resetColor();
 		}
 		
 		traveler = traveler->next;
 	}
+	setRed();
 	if (!moviesShown) {
+		
 		printf("No movies exist in the language %s\n", language);
+		
 	}
+	resetColor();
 
 }
 /*
@@ -195,7 +209,9 @@ void showListLanguage(struct linkedList* list) {
 int getYearInput() {
 	printf("Enter the year for which you want to see movies: ");
 	int year;
+	setCyan();
 	scanf("%d", &year);
+	resetColor();
 	return year;
 
 }
