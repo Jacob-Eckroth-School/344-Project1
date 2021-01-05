@@ -10,7 +10,7 @@ struct linkedList {
 void listAppend(struct linkedList* list, struct movie*);
 struct linkedList* initializeList();
 
-void printAllMovies(struct linkedList* list);
+
 
 void freeList(struct linkedList* list);
 

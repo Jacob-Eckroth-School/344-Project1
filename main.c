@@ -17,7 +17,6 @@ void runProgram(char*);
 void printStartInfo(struct linkedList* list, char*);
 void inputLoop(struct linkedList* list);
 void printChoices();
-
 int getChoiceInput();
 
 int main(int argc, char**argv) {
@@ -38,26 +37,36 @@ int main(int argc, char**argv) {
 }
 
 
-//returns 1 if file exists, 0 otherwise
+
+/*
+** Description: Returns true if file exists, 0 otherwise
+** Prerequisites: fileName is defined
+** Updated/Returned: returns true if the file exists, 0 otherwise.
+*/
 bool fileExists(char* fileName) {
 		return !(access(fileName, F_OK));
 }
 
 
-
+/*
+** Description: Runs the main program, with the filename as the input
+** Prerequisites: fileName is a valid file that exists
+** Updated/Returned: changes nothing, no returns
+*/
 void runProgram(char* fileName) {
 	FILE* file = fopen(fileName, "r");
 	char* line = NULL;
 	size_t len = 0;
 	ssize_t nread;
 
+	//gets rid of the first line which is pointless.
 	getline(&line, &len, file);
 	struct linkedList* movieList = initializeList();
 	struct movie* moviePointer;
 	
-	while ((nread = getline(&line,&len,file)) != -1) {		//goes through every line.
-		moviePointer = allocateMovie(line);
-		listAppend(movieList, moviePointer);
+	while ((nread = getline(&line,&len,file)) != -1) {		//goes through every line other than the first one
+		moviePointer = allocateMovie(line);	//parses the line into the movie struct
+		listAppend(movieList, moviePointer); //adds the movie struct to the linked list
 
 	}
 	free(line);
@@ -66,6 +75,7 @@ void runProgram(char* fileName) {
 
 	printStartInfo(movieList, fileName);
 
+	//main input loop
 	inputLoop(movieList);
 
 	
@@ -73,13 +83,23 @@ void runProgram(char* fileName) {
 }
 
 
+
+/*
+** Description: Prints how many movies were processed from the filename
+** Prerequisites: fileName is defined, list is allocated.
+** Updated/Returned: Nothing is changed, no returns
+*/
 void printStartInfo(struct linkedList* list, char* fileName) {
 	printf("Processed %s and parsed data for %d movies\n\n", fileName, list->amountOfMovies);
 }
 
 
 
-//loops until the user decides to exit. 
+/*
+** Description: Loops the input choices until the user decides to exit
+** Prerequisites: list is allocated
+** Updated/Returned: No updates
+*/
 void inputLoop(struct linkedList* list) {
 	bool looping = true;
 	while (looping) {
@@ -103,14 +123,16 @@ void inputLoop(struct linkedList* list) {
 
 			break;
 		}
-	
-
 	}
 
 
 }
 
-
+/*
+** Description: Gets input between 1-4 from the user
+** Prerequisites: None
+** Updated/Returned: returns an int 1-4
+*/
 int getChoiceInput() {
 	bool valid = false;
 	int choice = 0;
@@ -123,6 +145,7 @@ int getChoiceInput() {
 			valid = false;
 		}
 		else {
+			//bounds checking
 			if (userInput[0] - '0' >= 1 && userInput[0] - '0' <= 4) {
 				choice = userInput[0] - '0';
 				valid = true;
@@ -140,7 +163,11 @@ int getChoiceInput() {
 
 }
 
-//prints all the choices for the 
+/*
+** Description: Prints all the choices for the user to pick from
+** Prerequisites: None
+** Updated/Returned: None
+*/
 void printChoices() {
 	printf("\n1. Show movies released in the specified year\n");
 	printf("2. Show highest rated movie for each year\n");

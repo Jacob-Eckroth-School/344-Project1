@@ -4,13 +4,21 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-void listAppend(struct linkedList* list, struct movie* moviePointer) {
+#include <assert.h>
 
+/*
+** Description: Appends a movie pointer to a linked list
+** Prerequisites: list and moviePointer are allocated
+** Updated/Returned: linked list is updated to have the movie pointer at the end
+*/
+void listAppend(struct linkedList* list, struct movie* moviePointer) {
+	assert(list);
 	//if the list head exists
 	if (list->head) {
 		list->tail->next = moviePointer;
 		list->tail = moviePointer;
 	}
+	//else if the list has no items in it.
 	else {
 		list->head = moviePointer;
 		list->tail = moviePointer;
@@ -18,6 +26,12 @@ void listAppend(struct linkedList* list, struct movie* moviePointer) {
 	(list->amountOfMovies)++;
 }
 
+
+/*
+** Description: Initializes and returns a pointer to a linked list
+** Prerequisites: none
+** Updated/Returned: Returns an empty linked list.
+*/
 struct linkedList* initializeList() {
 	struct linkedList* list = (struct linkedList*)malloc(sizeof(struct linkedList));
 	list->head = NULL;
@@ -27,19 +41,21 @@ struct linkedList* initializeList() {
 }
 
 
-void printAllMovies(struct linkedList* list) {
-	struct movie* traveler = list->head;
-	while (traveler) {
-		printMovieInfo(traveler);
-		traveler = traveler->next;
-	}
-}
 
+/*
+** Description: Frees all memory associated with a linked list
+** Prerequisites: linked list is allocated
+** Updated/Returned: memory of linked list is freed
+*/
 void freeList(struct linkedList* list) {
+	assert(list);
 	struct movie* traveler = list->head;
 	struct movie* travelerNext = list->head->next;
 
+
+	//frees every movie in the linked list
 	while (traveler) {
+		assert(traveler);
 		clearMovieMemory(traveler);
 		traveler = travelerNext;
 		if (traveler) {
@@ -51,11 +67,18 @@ void freeList(struct linkedList* list) {
 
 
 
-
+/*
+** Description: Prints all movies of a certain year chosen by the user
+** Prerequisites: linked list is allocated
+** Updated/Returned: None updated, prints to screen.
+*/
 void showListYear(struct linkedList* list) {
+	assert(list);
 	int year = getYearInput();
 	bool moviesShown = false;
+	
 
+	//iterates through a list and prints a movie made in a certain year
 	struct movie* traveler = list->head;
 	while (traveler) {
 		if (traveler->year == year) {
@@ -71,10 +94,19 @@ void showListYear(struct linkedList* list) {
 	}
 }
 
+
+/*
+** Description: prints the movie with the best rating from every year
+** Prerequisites: linked list is allocated
+** Updated/Returned: None updated, prints to screen.
+*/
 void showListRating(struct linkedList* list) {
+	assert(list);
 	int maxYear = 0;
 	int minYear = 1000000;
 	struct movie* traveler = list->head;
+
+	//calculates the minimum and maximum year
 	while (traveler) {
 		if (traveler->year > maxYear) {
 			maxYear = traveler->year;
@@ -108,7 +140,7 @@ void showListRating(struct linkedList* list) {
 	}
 
 	for (int i = 0; i < range; i++) {
-		if (bestMovies[i]) {	//not every year will have a movie, so we check
+		if (bestMovies[i]) {	//not every year will specifically have a movie, so we check if there's a value
 			printf("%d %.1f %s\n", bestMovies[i]->year, bestMovies[i]->rating, bestMovies[i]->title);
 		}
 	}
@@ -118,7 +150,14 @@ void showListRating(struct linkedList* list) {
 
 }
 
+
+/*
+** Description: Prints all the movies with a certain language. Case sensitive
+** Prerequisites: linked list is allocated
+** Updated/Returned: None updated, prints to screen.
+*/
 void showListLanguage(struct linkedList* list) {
+	assert(list);
 	char language[21];
 	printf("Enter the language for which you want to see movies: ");
 	scanf("%s", language);
@@ -127,6 +166,8 @@ void showListLanguage(struct linkedList* list) {
 	struct movie* traveler = list->head;
 	while (traveler) {
 		bool languageFound = false;
+
+		//iterates through all the possible languages for a movie
 		for (int i = 0; i < traveler->amountOfLanguages; i++) {
 			if (strcmp(traveler->languages[i], language) == 0) {
 				languageFound = true;
@@ -146,8 +187,11 @@ void showListLanguage(struct linkedList* list) {
 	}
 
 }
-
-
+/*
+** Description: Returns an int based on user input for the year. No bounds checking
+** Prerequisites: None
+** Updated/Returned: Returns an int entered by user. As stated by assignment, we assume that the user enters a correct number. It works fine if they don't though.
+*/
 int getYearInput() {
 	printf("Enter the year for which you want to see movies: ");
 	int year;
