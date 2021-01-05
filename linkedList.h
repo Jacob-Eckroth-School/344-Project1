@@ -13,4 +13,11 @@ struct linkedList* initializeList();
 void printAllMovies(struct linkedList* list);
 
 void freeList(struct linkedList* list);
+
+void showListYear(struct linkedList* list);
+void showListRating(struct linkedList* list);
+void showListLanguage(struct linkedList* list);
+int getYearInput();
+
+
 #endif

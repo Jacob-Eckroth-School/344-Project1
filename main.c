@@ -18,6 +18,8 @@ void printStartInfo(struct linkedList* list, char*);
 void inputLoop(struct linkedList* list);
 void printChoices();
 
+int getChoiceInput();
+
 int main(int argc, char**argv) {
 	if (argc == 2) {
 		if (fileExists(argv[1])) {
@@ -79,12 +81,62 @@ void printStartInfo(struct linkedList* list, char* fileName) {
 void inputLoop(struct linkedList* list) {
 	bool looping = true;
 	while (looping) {
-		printChoices();
+		
+		int choice = getChoiceInput();
+		
+		switch (choice) {
+		case 1:
+			showListYear(list);
+			break;
+		case 2:
+			showListRating(list);
+			break;
+		case 3:
+			showListLanguage(list);
+			break;
+		case 4:
+			looping = false;
+			break;
+		default:
+
+			break;
+		}
+	
+
 	}
 
 
 }
 
+
+int getChoiceInput() {
+	bool valid = false;
+	int choice = 0;
+	char userInput[20];
+	while (!valid) {
+		printChoices();
+
+		scanf("%s", userInput);
+		if (strlen(userInput) != 1) {
+			valid = false;
+		}
+		else {
+			if (userInput[0] - '0' >= 1 && userInput[0] - '0' <= 4) {
+				choice = userInput[0] - '0';
+				valid = true;
+			}
+			else {
+				valid = false;
+			}
+		}
+		
+		if (!valid) {
+			printf("You entered an incorrect choice. Try again.\n");
+		}
+	}
+	return choice;
+
+}
 
 //prints all the choices for the 
 void printChoices() {
