@@ -46,20 +46,21 @@ bool fileExists(char* fileName) {
 
 
 void runProgram(char* fileName) {
-	FILE* file;
-	file = fopen(fileName, "r");
-	char line[1000];
+	FILE* file = fopen(fileName, "r");
+	char* line = NULL;
+	size_t len = 0;
+	ssize_t nread;
 
-
-	fgets(line, 1000, file);			//gets rid of the annoying top line
+	getline(&line, &len, file);
 	struct linkedList* movieList = initializeList();
 	struct movie* moviePointer;
 	
-	while (fgets(line, 1000, file) != NULL) {		//goes through every line.
-		
+	while ((nread = getline(&line,&len,file)) != -1) {		//goes through every line.
 		moviePointer = allocateMovie(line);
 		listAppend(movieList, moviePointer);
+
 	}
+	free(line);
 	fclose(file);
 
 
@@ -67,6 +68,7 @@ void runProgram(char* fileName) {
 
 	inputLoop(movieList);
 
+	
 	freeList(movieList);
 }
 

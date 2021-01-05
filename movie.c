@@ -61,7 +61,7 @@ struct movie* allocateMovie(char* fullLine) {
 
 
 	//rating
-	token = strtok_r(NULL, ",", &savePointer);
+	token = strtok_r(NULL, "\n", &savePointer);
 	moviePointer->rating = strtod(token, 0);
 
 	return moviePointer;
