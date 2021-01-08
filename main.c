@@ -2,7 +2,8 @@
 Name: Jacob Eckroth
 Date: 1/18/2021
 Project Name: Assignment 1: Movies
-Description:
+Description:This program takes a file as input and then gives the user many options as what they want to do with those movies 
+* to sort them and do such things. movies_sample_1.csv is an example of a template file.
 */
 #include <stdio.h>
 #include <unistd.h>
