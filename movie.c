@@ -58,22 +58,20 @@ struct movie* allocateMovie(char* fullLine) {
 */
 void assignMovieLanguages(char* languages, struct movie* moviePointer) {
 	char* savePointer;
-	char* removeFirstBracket;
+
 	
-	removeFirstBracket = strtok_r(languages, "[", &savePointer); //removes a [ from the string
-	
-	char* token = strtok_r(removeFirstBracket, "]", &savePointer); //removes a ] from the string
-	token = strtok_r(removeFirstBracket, ";", &savePointer);		//looks at the first language
+	char* token = strtok_r(languages, "[;]", &savePointer); //Assigns the first language
 	int amountOfLanguages = 0;
 	moviePointer->languages = (char**)malloc(sizeof(char*));		//allocates initial space for languages
 	while (token) {
+
 		++amountOfLanguages;
 		moviePointer->languages = (char**)realloc(moviePointer->languages, (sizeof(char*) * amountOfLanguages)); //reallocates memory based on how many languages there are
 
 		moviePointer->languages[amountOfLanguages - 1] = malloc((strlen(token) + 1) * sizeof(char));
 		strcpy(moviePointer->languages[amountOfLanguages - 1], token);
 
-		token = strtok_r(NULL, ";", &savePointer);
+		token = strtok_r(NULL, "[;]", &savePointer);
 	}
 	moviePointer->amountOfLanguages = amountOfLanguages;
 }

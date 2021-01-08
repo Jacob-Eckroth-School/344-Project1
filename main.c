@@ -91,7 +91,9 @@ void runProgram(char* fileName) {
 ** Updated/Returned: Nothing is changed, no returns
 */
 void printStartInfo(struct linkedList* list, char* fileName) {
+	setGreen();
 	printf("Processed %s and parsed data for %d movies\n\n", fileName, list->amountOfMovies);
+	resetColor();
 }
 
 
@@ -137,19 +139,24 @@ void inputLoop(struct linkedList* list) {
 int getChoiceInput() {
 	bool valid = false;
 	int choice = 0;
-	char userInput[20];
+	size_t bufsize = 2;
+	char* userInput = (char*)malloc(bufsize * (sizeof(char)));
 	while (!valid) {
 		printChoices();
 		setCyan();
-		scanf("%s", userInput);
+		
+		getline(&userInput, &bufsize, stdin);
+		userInput[strlen(userInput) - 1] = 0; //getting rid of newline character left over from getline
 		resetColor();
+
 		if (strlen(userInput) != 1) {
+	
 			valid = false;
 		}
 		else {
 			//bounds checking
 			if (userInput[0] - '0' >= 1 && userInput[0] - '0' <= 4) {
-				choice = userInput[0] - '0';
+				choice = userInput[0] - '0'; 
 				valid = true;
 			}
 			else {
@@ -163,6 +170,8 @@ int getChoiceInput() {
 			resetColor();
 		}
 	}
+
+	free(userInput);
 	return choice;
 
 }

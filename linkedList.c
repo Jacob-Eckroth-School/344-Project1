@@ -94,7 +94,7 @@ void showListYear(struct linkedList* list) {
 	resetColor();
 	if (!moviesShown) {
 		setRed();
-		printf("No movies exist for the year %d\n", year);
+		printf("No data available for movies released in the year %d.\n", year);
 		resetColor();
 	}
 }
@@ -164,10 +164,12 @@ void showListRating(struct linkedList* list) {
 */
 void showListLanguage(struct linkedList* list) {
 	assert(list);
-	char language[21];
+	size_t bufsize = 20;
+	char* language = (char*)malloc(bufsize * (sizeof(char)));
 	printf("Enter the language for which you want to see movies: ");
 	setCyan();
-	scanf("%s", language);
+	getline(&language, &bufsize, stdin);
+	language[strlen(language) - 1] = 0; //getting rid of newline character left over from getline
 	resetColor();
 	bool moviesShown = false;
 
@@ -195,10 +197,11 @@ void showListLanguage(struct linkedList* list) {
 	setRed();
 	if (!moviesShown) {
 		
-		printf("No movies exist in the language %s\n", language);
+		printf("No data available on movies in the language %s.\n", language);
 		
 	}
 	resetColor();
+	free(language);
 
 }
 /*
@@ -208,10 +211,19 @@ void showListLanguage(struct linkedList* list) {
 */
 int getYearInput() {
 	printf("Enter the year for which you want to see movies: ");
-	int year;
+	size_t bufsize = 10;
+	char* userInput = (char*)malloc(bufsize * (sizeof(char)));
+
 	setCyan();
-	scanf("%d", &year);
+	getline(&userInput, &bufsize, stdin);
 	resetColor();
+	userInput[strlen(userInput) - 1] = 0;			//getting rid of newline character left over from getline
+	int year = atoi(userInput);
+	
+
+	free(userInput);
 	return year;
 
 }
+
+
