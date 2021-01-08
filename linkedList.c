@@ -164,7 +164,7 @@ void showListRating(struct linkedList* list) {
 */
 void showListLanguage(struct linkedList* list) {
 	assert(list);
-	size_t bufsize = 20;
+	size_t bufsize = 21;
 	char* language = (char*)malloc(bufsize * (sizeof(char)));
 	printf("Enter the language for which you want to see movies: ");
 	setCyan();
